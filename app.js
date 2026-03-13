@@ -355,7 +355,21 @@ app.get('/setup-admin', async (req, res) => {
     res.status(500).send('Error creating admin user: ' + error.message);
   }
 });
-
+// TEMPORARY - remove after use
+app.get('/reset-admin', async (req, res) => {
+  try {
+    await User.deleteMany({});
+    const adminUser = new User({
+      username: 'PanthersRugby_Db',
+      password: 'Panthers2024',
+      role: 'admin'
+    });
+    await adminUser.save();
+    res.send('✅ Admin reset! Username: PanthersRugby_Db | Password: Panthers2024');
+  } catch (error) {
+    res.status(500).send('Error: ' + error.message);
+  }
+});
 // Start server
 app.listen(PORT, () => {
   console.log(`🏉 Panthers Rugby app running on http://localhost:${PORT}`);
